@@ -1,0 +1,2 @@
+builder = "dockerfile"
+dockerfile = "backend/Dockerfile"
