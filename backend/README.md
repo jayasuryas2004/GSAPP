@@ -259,28 +259,38 @@ All links verified **100% working** with GET requests:
 
 ## 🔐 Security & RLS Policies
 
-All tables have Row-Level Security enabled:
+All tables have Row-Level Security enabled with **authenticated-only access**:
 
 ```
 SCHEMES TABLE:
-├── Public Read: Everyone can view all schemes
-├── Public Insert: Scrapers can add schemes
-└── Public Update: Scrapers can update schemes
+├── Read: ✅ Authenticated users (RLS enforced)
+├── Write: ✅ Service Role only (backend)
+└── Delete: ❌ Disabled
 
 USERS TABLE:
-├── Public Read: Anyone can view user preferences
-└── Public Update: Users can update their preferences
+├── Read: ✅ Users read own record
+├── Update: ✅ Users update own record
+└── Delete: ❌ Disabled
 
 SAVED_SCHEMES TABLE:
-├── Public Read: Anyone can query wishlists
-├── Public Insert: Anyone can add to wishlist
-└── Public Delete: Anyone can remove from wishlist
+├── Read: ✅ Users read own wishlist
+├── Insert: ✅ Users add to own wishlist
+├── Delete: ✅ Users remove from own wishlist
+└── Write: ❌ Restricted
 
 ANALYTICS TABLE:
-└── Public Read: Anyone can view popularity stats
+├── Read: ✅ Authenticated users only
+├── Write: ✅ Service Role only (backend)
+└── Delete: ❌ Disabled
 ```
 
-**Note:** For production with authentication, restrict these policies to authenticated users only.
+**Key Features:**
+- ✅ No anonymous public access
+- ✅ Each user isolated to their own data
+- ✅ Backend operations via SERVICE_KEY only
+- ✅ `.env` credentials not in GitHub
+
+**For detailed security setup, see:** [`../SECURITY.md`](../SECURITY.md)
 
 ---
 
